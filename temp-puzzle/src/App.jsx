@@ -144,11 +144,21 @@ export default function App() {
               justifyContent: "center",
               alignItems: "center",
               backgroundColor: "#fff",
+              overflow: "hidden",
             }}
           >
-            {pieces.includes(i + 1)
-              ? `조각 ${i + 1}`
-              : "❓"}
+            {pieces.includes(i + 1) ? (
+              <img
+                src={`/pieces/piece_${String(i+1).padStart(2,"0")}.png`}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+                />
+            ) : (
+              "❓"
+            )}
           </div>
         ))}
       </div>
