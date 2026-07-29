@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./App.css";
 
 const TOTAL = 30;
 
@@ -13,6 +14,14 @@ export default function App() {
   const progress = Math.round(
   (pieces.length / TOTAL) * 100
 );
+const teamColor =
+  team === "red"
+    ? "#ffe5e5"
+    : team === "blue"
+    ? "#e5f0ff"
+    : team === "green"
+    ? "#e8ffe5"
+    : "#f0f0f0";
 
   useEffect(() => {
     const params = new URLSearchParams(
@@ -58,8 +67,10 @@ export default function App() {
 );
 
       setMessage(
-        `🎉 ${piece}번 조각을 획득했습니다!`
-      );
+  `✨ NEW! ✨
+
+🎉 ${piece}번 조각을 획득했습니다!`
+);
     }
 
     setPieces(nextPieces);
@@ -113,7 +124,7 @@ if (!team) {
         textAlign: "center",
       }}
     >
-      <h1>🧩 팡이 보물찾기</h1>
+      <h1>🧩 퍼즐찾기</h1>
 
       <h2>팀을 선택하세요</h2>
 
@@ -154,22 +165,43 @@ if (!team) {
 }
 
   return (
-    <div
-      style={{
-        padding: 20,
-        maxWidth: 900,
-        margin: "0 auto",
-        textAlign: "center",
-      }}
-    >
-      <h1>🧩 팡이 보물찾기</h1>
+  <div
+    style={{
+      padding: 20,
+      maxWidth: 900,
+      margin: "0 auto",
+      textAlign: "center",
+      backgroundColor: teamColor,
+      minHeight: "100vh",
+    }}
+  >
 
-<h2>
-  {team === "red" && "🔴 빨강팀"}
-  {team === "blue" && "🔵 파랑팀"}
-  {team === "green" && "🟢 초록팀"}
-  {team === "black" && "⚫ 검정팀"}
-</h2>
+      <div
+  style={{
+    backgroundColor:
+      team === "red"
+        ? "#ffdddd"
+        : team === "blue"
+        ? "#dde8ff"
+        : team === "green"
+        ? "#ddffdd"
+        : "#eeeeee",
+   padding: "25px",
+borderRadius: "20px",
+marginBottom: "20px",
+boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
+  }}
+>
+  <h1>🧩 퍼즐찾기</h1>
+
+  <h2>
+    {team === "red" && "🔴 빨강팀"}
+    {team === "blue" && "🔵 파랑팀"}
+    {team === "green" && "🟢 초록팀"}
+    {team === "black" && "⚫ 검정팀"}
+  </h2>
+
+</div>
 
 <p
   style={{
@@ -180,6 +212,26 @@ if (!team) {
 
   진행률: {pieces.length}/{TOTAL}
   ({progress}%)
+</p>
+<p
+  style={{
+    fontSize: "16px",
+    marginTop: "10px",
+  }}
+>
+  🏆 획득한 조각
+</p>
+
+<p
+  style={{
+    fontWeight: "bold",
+  }}
+>
+  {pieces.length > 0
+    ? [...pieces]
+        .sort((a, b) => a - b)
+        .join(", ")
+    : "없음"}
 </p>
 
 <div
@@ -200,21 +252,6 @@ if (!team) {
       transition: "0.5s",
     }}
   />
-</div>
-<div
-  style={{
-    marginBottom: "20px",
-  }}
->
-  <strong>획득한 조각</strong>
-
-  <br />
-
-  {pieces.length > 0
-    ? [...pieces]
-        .sort((a, b) => a - b)
-        .join(", ")
-    : "없음"}
 </div>
 
       <button
@@ -254,8 +291,8 @@ if (!team) {
           style={{
             padding: 12,
             marginBottom: 15,
-            backgroundColor: "#dff0d8",
-            border: "1px solid #b2d8b2",
+            backgroundColor: "##fff3cd",
+            border: "2px solid #ffd43b",
           }}
         >
           {message}
@@ -297,6 +334,7 @@ if (!team) {
     borderRadius: "10px",
   }}
 />
+
 
   </div>
 )}
