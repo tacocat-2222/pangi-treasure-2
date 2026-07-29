@@ -5,6 +5,9 @@ const TOTAL = 30;
 export default function App() {
   const [pieces, setPieces] = useState([]);
   const [message, setMessage] = useState("");
+  const [ team, setTeam] = useState(
+    localStorage.getItem("team") || ""
+  );
 
   useEffect(() => {
     const params = new URLSearchParams(
@@ -70,6 +73,63 @@ export default function App() {
   }
 };
 
+const selectTeam = (selectedTeam) => {
+  localStorage.setItem(
+    "team",
+    selectedTeam
+  );
+
+  setTeam(selectedTeam);
+};
+
+if (!team) {
+  return (
+    <div
+      style={{
+        padding: 30,
+        textAlign: "center",
+      }}
+    >
+      <h1>🧩 팡이 보물찾기</h1>
+
+      <h2>팀을 선택하세요</h2>
+
+      <button
+        onClick={() => selectTeam("red")}
+      >
+        🔴 빨강팀
+      </button>
+
+      <br />
+      <br />
+
+      <button
+        onClick={() => selectTeam("blue")}
+      >
+        🔵 파랑팀
+      </button>
+
+      <br />
+      <br />
+
+      <button
+        onClick={() => selectTeam("green")}
+      >
+        🟢 초록팀
+      </button>
+
+      <br />
+      <br />
+
+      <button
+        onClick={() => selectTeam("black")}
+      >
+        ⚫ 검정팀
+      </button>
+    </div>
+  );
+}
+``
   return (
     <div
       style={{
