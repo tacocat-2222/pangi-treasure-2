@@ -48,16 +48,27 @@ export default function App() {
   }, []);
 
   const resetPuzzle = () => {
-    if (
-      window.confirm(
-        "정말 퍼즐을 초기화하시겠습니까?"
-      )
-    ) {
-      localStorage.removeItem("pieces");
-      setPieces([]);
-      setMessage("🔄 퍼즐이 초기화되었습니다.");
+  if (
+    window.confirm(
+      "정말 퍼즐을 초기화하시겠습니까?"
+    )
+  ) {
+    const adminCode = window.prompt(
+      "관리자 코드를 입력하세요."
+    );
+
+    if (adminCode !== "0000") {
+      alert("관리자 코드가 올바르지 않습니다.");
+      return;
     }
-  };
+
+    localStorage.removeItem("pieces");
+    setPieces([]);
+    setMessage("🔄 퍼즐이 초기화되었습니다.");
+
+    alert("퍼즐이 초기화되었습니다.");
+  }
+};
 
   return (
     <div
