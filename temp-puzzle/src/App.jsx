@@ -10,6 +10,9 @@ export default function App() {
   );
 
   const storageKey = `pieces_${team}`;
+  const progress = Math.round(
+  (pieces.length / TOTAL) * 100
+);
 
   useEffect(() => {
     const params = new URLSearchParams(
@@ -18,7 +21,7 @@ export default function App() {
 
     // 관리자 초기화
     if (params.get("reset") === "1") {
-      localStorage.removeItem("pieces");
+      localStorage.removeItem(storageKey);
       setPieces([]);
       setMessage("🔄 퍼즐이 초기화되었습니다.");
       return;
@@ -60,7 +63,7 @@ export default function App() {
     }
 
     setPieces(nextPieces);
-  }, []);
+  }, [team]);
 
   const resetPuzzle = () => {
   if (
@@ -97,8 +100,10 @@ const selectTeam = (selectedTeam) => {
 const changeTeam = () => {
   localStorage.removeItem("team");
   setTeam("");
+  setPieces([]);
   setMessage("");
-};
+  window.location.href = "/";
+}
 
 if (!team) {
   return (
@@ -147,7 +152,7 @@ if (!team) {
     </div>
   );
 }
-``
+
   return (
     <div
       style={{
@@ -159,15 +164,76 @@ if (!team) {
     >
       <h1>🧩 팡이 보물찾기</h1>
 
-      <p
-        style={{
-          fontSize: "20px",
-          fontWeight: "bold",
-        }}
-      >
-        진행률: {pieces.length}/{TOTAL}
-      </p>
+<h2>
+  {team === "red" && "🔴 빨강팀"}
+  {team === "blue" && "🔵 파랑팀"}
+  {team === "green" && "🟢 초록팀"}
+  {team === "black" && "⚫ 검정팀"}
+</h2>
 
+<p
+  style={{
+    fontSize: "20px",
+    fontWeight: "bold",
+  }}
+>
+
+  진행률: {pieces.length}/{TOTAL}
+  ({progress}%)
+</p>
+
+<div
+  style={{
+    width: "100%",
+    maxWidth: "500px",
+    margin: "0 auto 20px",
+    backgroundColor: "#ddd",
+    borderRadius: "10px",
+    overflow: "hidden",
+  }}
+>
+  <div
+    style={{
+      width: `${progress}%`,
+      height: "25px",
+      backgroundColor: "#4caf50",
+      transition: "0.5s",
+    }}
+  />
+</div>
+<div
+  style={{
+    marginBottom: "20px",
+  }}
+>
+  <strong>획득한 조각</strong>
+
+  <br />
+
+  {pieces.length > 0
+    ? [...pieces]
+        .sort((a, b) => a - b)
+        .join(", ")
+    : "없음"}
+</div>
+
+      <button
+  onClick={changeTeam}
+  style={{
+    marginBottom: 15,
+    padding: "10px 15px",
+    backgroundColor: "#666",
+    color: "white",
+    border: "none",
+    borderRadius: "6px",
+    cursor: "pointer",
+  }}
+>
+  🔄 팀 변경
+</button>
+
+<br />
+<br />
       <button
         onClick={resetPuzzle}
         style={{
