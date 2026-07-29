@@ -9,6 +9,8 @@ export default function App() {
     localStorage.getItem("team") || ""
   );
 
+  const storageKey = `pieces_${team}`;
+
   useEffect(() => {
     const params = new URLSearchParams(
       window.location.search
@@ -23,7 +25,7 @@ export default function App() {
     }
 
     const saved = JSON.parse(
-      localStorage.getItem("pieces") || "[]"
+      localStorage.getItem(storageKey) || "[]"
     );
 
     const piece = Number(params.get("piece"));
@@ -48,9 +50,9 @@ export default function App() {
       nextPieces.push(piece);
 
       localStorage.setItem(
-        "pieces",
-        JSON.stringify(nextPieces)
-      );
+  storageKey,
+  JSON.stringify(nextPieces)
+);
 
       setMessage(
         `🎉 ${piece}번 조각을 획득했습니다!`
@@ -75,7 +77,7 @@ export default function App() {
       return;
     }
 
-    localStorage.removeItem("pieces");
+    localStorage.removeItem(storageKey);
     setPieces([]);
     setMessage("🔄 퍼즐이 초기화되었습니다.");
 
@@ -90,6 +92,12 @@ const selectTeam = (selectedTeam) => {
   );
 
   setTeam(selectedTeam);
+};
+
+const changeTeam = () => {
+  localStorage.removeItem("team");
+  setTeam("");
+  setMessage("");
 };
 
 if (!team) {
@@ -189,23 +197,43 @@ if (!team) {
       )}
 
       {pieces.length === TOTAL && (
-        <div
-          style={{
-            padding: 20,
-            marginBottom: 20,
-            backgroundColor: "#ffe066",
-            borderRadius: "10px",
-            fontSize: "24px",
-            fontWeight: "bold",
-          }}
-        >
-          🎊 축하합니다!
-          <br />
-          30개의 조각을 모두 찾았습니다!
-          <br />
-          팡이 보물찾기 성공!
-        </div>
-      )}
+  <div
+    style={{
+      padding: 20,
+      marginBottom: 20,
+      backgroundColor: "#ffe066",
+      borderRadius: "10px",
+      textAlign: "center",
+    }}
+  >
+    <h2>🎊 축하합니다! 🎊</h2>
+
+    <p>
+      {team === "red" && "🔴 빨강팀 퍼즐 완성!"}
+      {team === "blue" && "🔵 파랑팀 퍼즐 완성!"}
+      {team === "green" && "🟢 초록팀 퍼즐 완성!"}
+      {team === "black" && "⚫ 검정팀 퍼즐 완성!"}
+    </p>
+
+    <img
+  src={
+    team === "red"
+      ? "/complete_red.jpg"
+      : team === "blue"
+      ? "/complete_blue.jpg"
+      : team === "green"
+      ? "/complete_green.jpg"
+      : "/complete_black.jpg"
+  }
+  style={{
+    width: "100%",
+    maxWidth: "600px",
+    borderRadius: "10px",
+  }}
+/>
+
+  </div>
+)}
 
       <div
         style={{
