@@ -27,8 +27,18 @@ export default function App() {
     );
 
     const piece = Number(params.get("piece"));
+    const qrTeam = params.get("team");
 
     let nextPieces = [...saved];
+    if (qrTeam && qrTeam !== team) {
+  setMessage(
+    "🚫 잘못된 조각입니다! 다른 팀의 QR입니다."
+  );
+
+  setPieces(saved);
+
+  return;
+}
 
     if (
       piece >= 1 &&
@@ -220,7 +230,7 @@ if (!team) {
           >
             {pieces.includes(i + 1) ? (
               <img
-                src={`/pieces/piece_${String(i+1).padStart(2,"0")}.png`}
+                src={`/${team}/piece_${String(i+1).padStart(2,"0")}.png`}
                 style={{
                   width: "100%",
                   height: "100%",
