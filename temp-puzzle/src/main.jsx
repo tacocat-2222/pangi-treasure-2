@@ -7,7 +7,9 @@ import App from "./App.jsx";
 import Admin from "./Admin.jsx";
 
 const isAdmin =
-  window.location.pathname === "/admin";
+  new URLSearchParams(
+    window.location.search
+  ).get("admin") === "1";
 
 createRoot(
   document.getElementById("root")
