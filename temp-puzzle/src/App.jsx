@@ -2,7 +2,8 @@ import { db } from "./firebase";
 import {
   doc,
   getDoc,
-  setDoc
+  setDoc,
+  onSnapshot
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import "./App.css";
@@ -30,30 +31,35 @@ const teamColor =
     : "#f0f0f0";
 
   useEffect(() => {
-    const search = window.location.search;
+  if (!team) return;
+
+  const loadData = async () => {
     const params = new URLSearchParams(
       window.location.search
     );
 
-    const teamRef = doc(
-  db,
-  "teams",
-  team
-);
+    const teamRef = doc(db, "teams", team);
+
+    const snap = await getDoc(teamRef);
+
+    let saved = [];
+
+    if (snap.exists()) {
+      saved = snap.data().pieces || [];
+    }
 
     const piece = Number(params.get("piece"));
     const qrTeam = params.get("team");
 
-    let nextPieces = [...pieces];
     if (qrTeam && qrTeam !== team) {
-  setMessage(
-    "🚫 잘못된 조각입니다! 다른 팀의 QR입니다."
-  );
+      setMessage(
+        "🚫 잘못된 조각입니다! 다른 팀의 QR입니다."
+      );
+      setPieces(saved);
+      return;
+    }
 
-  setPieces([]);
-
-  return;
-}
+    let nextPieces = [...saved];
 
     if (
       piece >= 1 &&
@@ -62,15 +68,22 @@ const teamColor =
     ) {
       nextPieces.push(piece);
 
+      await setDoc(teamRef, {
+        pieces: nextPieces,
+      });
+
       setMessage(
-  `✨ NEW! ✨
+        `✨ NEW! ✨
 
 🎉 ${piece}번 조각을 획득했습니다!`
-);
+      );
     }
 
     setPieces(nextPieces);
-  }, [team, window.location.search]);
+  };
+
+  loadData();
+}, [team, window.location.search]);
 
   const resetPuzzle = () => {
   if (
@@ -87,8 +100,14 @@ const teamColor =
       return;
     }
 
-    localStorage.removeItem(storageKey);
-    setPieces([]);
+    const teamRef = doc(db, "teams", team);
+
+setDoc(teamRef, {
+  pieces: [],
+});
+
+setPieces([]);
+
     setMessage("🔄 퍼즐이 초기화되었습니다.");
 
     alert("퍼즐이 초기화되었습니다.");
@@ -122,7 +141,24 @@ const changeTeam = () => {
 
   window.location.href = "/";
 };
+useEffect(() => {
+  if (!team) return;
 
+  const teamRef = doc(db, "teams", team);
+
+  const unsubscribe = onSnapshot(
+    teamRef,
+    (snap) => {
+      if (snap.exists()) {
+        setPieces(
+          snap.data().pieces || []
+        );
+      }
+    }
+  );
+
+  return () => unsubscribe();
+}, [team, window.location.search]);
 
 if (!team) {
   return (
