@@ -64,6 +64,7 @@ const teamColor =
       piece >= 1 &&
       piece <= TOTAL &&
       !nextPieces.includes(piece)
+      
     ) {
       nextPieces.push(piece);
       navigator.vibrate?.(300);
@@ -85,10 +86,10 @@ const teamColor =
   loadData();
 }, [team, window.location.search]);
 
-  const resetPuzzle = () => {
+  const resetPuzzle = async () => {
   if (
     window.confirm(
-      "정말 퍼즐을 초기화하시겠습니까?"
+      "정말 모든 퍼즐을 초기화하시겠습니까?"
     )
   ) {
     const adminCode = window.prompt(
@@ -100,17 +101,30 @@ const teamColor =
       return;
     }
 
-    const teamRef = doc(db, "teams", team);
+    const teams = [
+  "red",
+  "blue",
+  "green",
+  "black",
+];
 
-setDoc(teamRef, {
-  pieces: [],
-});
+for (const teamName of teams) {
+  const teamRef = doc(
+    db,
+    "teams",
+    teamName
+  );
+
+  await setDoc(teamRef, {
+    pieces: [],
+  });
+}
 
 setPieces([]);
 
-    setMessage("🔄 퍼즐이 초기화되었습니다.");
+    setMessage("⚠️ 전체 팀 퍼즐이 초기화되었습니다.");
 
-    alert("퍼즐이 초기화되었습니다.");
+    alert("전체 팀 퍼즐이 초기화되었습니다.");
   }
 };
 
@@ -298,38 +312,52 @@ boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
   />
 </div>
 
-      <button
-  onClick={changeTeam}
+      <div
   style={{
-    marginBottom: 15,
-    padding: "10px 15px",
-    backgroundColor: "#666",
-    color: "white",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
+    display: "flex",
+    justifyContent: "center",
+    gap: "10px",
+    marginBottom: "20px",
   }}
 >
-  🔄 팀 변경
-</button>
+  <div
+  style={{
+    display: "flex",
+    justifyContent: "center",
+    gap: "10px",
+    marginBottom: "20px",
+  }}
+>
+  <button
+    onClick={changeTeam}
+    style={{
+      padding: "10px 15px",
+      backgroundColor: "#666",
+      color: "white",
+      border: "none",
+      borderRadius: "6px",
+      cursor: "pointer",
+    }}
+  >
+    🔄 팀 변경
+  </button>
 
-<br />
-<br />
-      <button
-        onClick={resetPuzzle}
-        style={{
-          marginBottom: 20,
-          padding: "10px 15px",
-          backgroundColor: "#ff6b6b",
-          color: "white",
-          border: "none",
-          borderRadius: "6px",
-          cursor: "pointer",
-        }}
-      >
-        퍼즐 초기화
-      </button>
+  <button
+    onClick={resetPuzzle}
+    style={{
+      padding: "10px 15px",
+      backgroundColor: "#ff6b6b",
+      color: "white",
+      border: "none",
+      borderRadius: "6px",
+      cursor: "pointer",
+    }}
+  >
+    🗑 전체 초기화
+  </button>
+</div>
 
+</div>
       {message && (
         <div
           style={{
@@ -417,8 +445,41 @@ boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
               "❓"
             )}
           </div>
+          
         ))}
       </div>
-    </div>
-  );
+
+<button
+  onClick={() => {
+    const password = window.prompt(
+      "관리자 비밀번호를 입력하세요."
+    );
+
+    if (password !== "8291") {
+      alert(
+        "비밀번호가 올바르지 않습니다."
+      );
+      return;
+    }
+
+    window.open(
+      "/admin",
+      "_blank"
+    );
+  }}
+  style={{
+    marginTop: "25px",
+    padding: "12px 20px",
+    backgroundColor: "#1f3c88",
+    color: "white",
+    border: "none",
+    borderRadius: "8px",
+    cursor: "pointer",
+  }}
+>
+  📊 관리자 대시보드
+</button>
+
+</div>
+);
 }
