@@ -88,6 +88,33 @@ export default function Admin() {
                 {pieces.length}/{TOTAL}
                 ({percent}%)
               </p>
+              <div
+  style={{
+    width: "100%",
+    backgroundColor: "#ddd",
+    borderRadius: "10px",
+    overflow: "hidden",
+    height: "25px",
+    marginTop: "10px",
+    marginBottom: "10px",
+  }}
+>
+  <div
+    style={{
+      width: `${percent}%`,
+      height: "100%",
+      backgroundColor:
+        team === "red"
+          ? "#ff4d4d"
+          : team === "blue"
+          ? "#4d79ff"
+          : team === "green"
+          ? "#33cc66"
+          : "#555",
+      transition: "0.5s",
+    }}
+  />
+</div>
 
               <p>
                 획득 조각:
