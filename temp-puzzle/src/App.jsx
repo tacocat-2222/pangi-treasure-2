@@ -1,3 +1,9 @@
+import { db } from "./firebase";
+import {
+  doc,
+  getDoc,
+  setDoc
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import "./App.css";
 
@@ -304,7 +310,7 @@ boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
           style={{
             padding: 12,
             marginBottom: 15,
-            backgroundColor: "##fff3cd",
+            backgroundColor: "#fff3cd",
             border: "2px solid #ffd43b",
           }}
         >
