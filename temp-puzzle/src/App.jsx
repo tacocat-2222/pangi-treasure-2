@@ -35,28 +35,22 @@ const teamColor =
       window.location.search
     );
 
-    // 관리자 초기화
-    if (params.get("reset") === "1") {
-      localStorage.removeItem(storageKey);
-      setPieces([]);
-      setMessage("🔄 퍼즐이 초기화되었습니다.");
-      return;
-    }
-
-    const saved = JSON.parse(
-      localStorage.getItem(storageKey) || "[]"
-    );
+    const teamRef = doc(
+  db,
+  "teams",
+  team
+);
 
     const piece = Number(params.get("piece"));
     const qrTeam = params.get("team");
 
-    let nextPieces = [...saved];
+    let nextPieces = [...pieces];
     if (qrTeam && qrTeam !== team) {
   setMessage(
     "🚫 잘못된 조각입니다! 다른 팀의 QR입니다."
   );
 
-  setPieces(saved);
+  setPieces([]);
 
   return;
 }
@@ -64,14 +58,9 @@ const teamColor =
     if (
       piece >= 1 &&
       piece <= TOTAL &&
-      !saved.includes(piece)
+      !nextPieces.includes(piece)
     ) {
       nextPieces.push(piece);
-
-      localStorage.setItem(
-  storageKey,
-  JSON.stringify(nextPieces)
-);
 
       setMessage(
   `✨ NEW! ✨
