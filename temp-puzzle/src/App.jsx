@@ -84,7 +84,7 @@ const teamColor =
   };
 
   loadData();
-}, [team, window.location.search]);
+}, [team]);
 
   const resetPuzzle = async () => {
   if (
@@ -172,7 +172,7 @@ useEffect(() => {
   );
 
   return () => unsubscribe();
-}, [team, window.location.search]);
+}, [team]);
 
 if (!team) {
   return (
@@ -463,7 +463,7 @@ boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
     }
 
     window.open(
-      "/admin",
+      "/?admin=1",
       "_blank"
     );
   }}
