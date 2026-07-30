@@ -87,7 +87,7 @@ const teamColor =
       "관리자 코드를 입력하세요."
     );
 
-    if (adminCode !== "0000") {
+    if (adminCode !== "8291") {
       alert("관리자 코드가 올바르지 않습니다.");
       return;
     }
@@ -101,15 +101,6 @@ const teamColor =
 };
 
 const selectTeam = (selectedTeam) => {
-  const password = window.prompt(
-    "팀 선택 비밀번호를 입력하세요."
-  );
-
-  if (password !== "8291") {
-    alert("비밀번호가 올바르지 않습니다.");
-    return;
-  }
-
   localStorage.setItem(
     "team",
     selectedTeam
@@ -118,13 +109,16 @@ const selectTeam = (selectedTeam) => {
   setTeam(selectedTeam);
 };
 
+
 const changeTeam = () => {
   localStorage.removeItem("team");
   setTeam("");
   setPieces([]);
   setMessage("");
+
   window.location.href = "/";
-}
+};
+
 
 if (!team) {
   return (
@@ -134,7 +128,7 @@ if (!team) {
         textAlign: "center",
       }}
     >
-      <h1>🧩 퍼즐찾기</h1>
+      <h1>🧩 퍼즐찾기 🧩</h1>
 
       <h2>팀을 선택하세요</h2>
 
@@ -202,7 +196,7 @@ marginBottom: "20px",
 boxShadow: "0 4px 15px rgba(0,0,0,0.15)",
   }}
 >
-  <h1>🧩 퍼즐찾기</h1>
+  <h1>🧩 퍼즐찾기 🧩</h1>
 
   <h2>
     {team === "red" && "🔴 빨강팀"}
