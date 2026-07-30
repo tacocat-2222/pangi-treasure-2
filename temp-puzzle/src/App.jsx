@@ -24,6 +24,7 @@ const teamColor =
     : "#f0f0f0";
 
   useEffect(() => {
+    const search = window.location.search;
     const params = new URLSearchParams(
       window.location.search
     );
@@ -74,7 +75,7 @@ const teamColor =
     }
 
     setPieces(nextPieces);
-  }, [team]);
+  }, [team, window.location.search]);
 
   const resetPuzzle = () => {
   if (
@@ -100,6 +101,15 @@ const teamColor =
 };
 
 const selectTeam = (selectedTeam) => {
+  const password = window.prompt(
+    "팀 선택 비밀번호를 입력하세요."
+  );
+
+  if (password !== "8291") {
+    alert("비밀번호가 올바르지 않습니다.");
+    return;
+  }
+
   localStorage.setItem(
     "team",
     selectedTeam
