@@ -17,7 +17,6 @@ export default function App() {
     localStorage.getItem("team") || ""
   );
 
-  const storageKey = `pieces_${team}`;
   const progress = Math.round(
   (pieces.length / TOTAL) * 100
 );
@@ -67,6 +66,7 @@ const teamColor =
       !nextPieces.includes(piece)
     ) {
       nextPieces.push(piece);
+      navigator.vibrate?.(300);
 
       await setDoc(teamRef, {
         pieces: nextPieces,
