@@ -139,12 +139,11 @@ const selectTeam = (selectedTeam) => {
 
 
 const changeTeam = () => {
-  const password = window.prompt(
-    "팀 변경 비밀번호를 입력하세요."
-  );
-
-  if (password !== "8291") {
-    alert("비밀번호가 올바르지 않습니다.");
+  if (
+    !window.confirm(
+      "팀을 변경하시겠습니까?"
+    )
+  ) {
     return;
   }
 
@@ -155,6 +154,7 @@ const changeTeam = () => {
 
   window.location.href = "/";
 };
+
 useEffect(() => {
   if (!team) return;
 
